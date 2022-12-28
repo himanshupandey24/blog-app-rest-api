@@ -20,12 +20,12 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final ModelMapper modelMapper;
+    private ModelMapper mapper;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
+        this.mapper = mapper;
     }
 
     @Override
@@ -46,7 +46,6 @@ public class PostServiceImpl implements PostService {
         Page<Post> postsPage = postRepository.findAll(pageable);
 
         List<PostDto> content = postsPage.getContent().stream()
-                .parallel()
                 .map(this::mapToDTO)
                 .toList();
 
@@ -87,11 +86,11 @@ public class PostServiceImpl implements PostService {
 
     //Convert Entity to DTO
     private PostDto mapToDTO(Post post){
-        return modelMapper.map(post, PostDto.class);
+        return mapper.map(post, PostDto.class);
     }
 
     //Convert DTO to Entity
     private Post mapToEntity(PostDto postDto){
-        return modelMapper.map(postDto, Post.class);
+        return mapper.map(postDto,Post.class);
     }
 }

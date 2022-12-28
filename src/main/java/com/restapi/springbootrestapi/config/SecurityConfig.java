@@ -36,6 +36,8 @@ public class SecurityConfig {
         return httpSecurity.build();
     }
 
+    //In memory Authentication
+
     @Bean
     public UserDetailsService userDetailsService(){
         UserDetails himanshu = User.builder()

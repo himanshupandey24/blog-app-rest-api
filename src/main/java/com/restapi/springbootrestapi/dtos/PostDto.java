@@ -3,7 +3,6 @@ package com.restapi.springbootrestapi.dtos;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
 import java.util.Set;
 
 @Data
