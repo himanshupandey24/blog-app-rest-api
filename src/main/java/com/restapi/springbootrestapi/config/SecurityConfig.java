@@ -27,10 +27,9 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf().disable()
-                .authorizeHttpRequests(authorize -> {
+                .authorizeHttpRequests(authorize ->
                     authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
-                            .anyRequest().authenticated();
-                })
+                            .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
 
         return httpSecurity.build();
@@ -38,20 +37,20 @@ public class SecurityConfig {
 
     //In memory Authentication
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails himanshu = User.builder()
-                .username("Himanshu")
-                .password(passwordEncoder().encode("HomE@2024"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("admin@2024"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(himanshu, admin);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        UserDetails himanshu = User.builder()
+//                .username("Himanshu")
+//                .password(passwordEncoder().encode("Himanshu"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder().encode("admin"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(himanshu, admin);
+//    }
 }
