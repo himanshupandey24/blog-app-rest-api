@@ -1,6 +1,7 @@
 package com.restapi.springbootrestapi.controller;
 
 
+import com.restapi.springbootrestapi.dtos.JWTAuthResponse;
 import com.restapi.springbootrestapi.dtos.LoginDto;
 import com.restapi.springbootrestapi.dtos.RegisterDto;
 import com.restapi.springbootrestapi.service.AuthService;
@@ -21,14 +22,16 @@ public class AuthController {
     }
 
     //Build Login or SignIn Rest API
-    @PostMapping(value = {"login", "signin"})
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
-        String response = authService.login(loginDto);
-        return ResponseEntity.ok(response);
+    @PostMapping(value = {"/login", "/signin"})
+    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto){
+        String token = authService.login(loginDto);
+        JWTAuthResponse jwtAuthResponse = new JWTAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+        return ResponseEntity.ok(jwtAuthResponse);
     }
 
     //Register API
-    @PostMapping(value = {"register", "signup"})
+    @PostMapping(value = {"/register", "/signup"})
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto){
         String response = authService.register(registerDto);
         return ResponseEntity.ok(response);

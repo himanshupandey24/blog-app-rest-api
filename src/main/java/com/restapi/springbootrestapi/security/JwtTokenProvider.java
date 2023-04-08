@@ -15,7 +15,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${app-jwt-secret}")
+    @Value("${app.jwt-secret}")
     private String jwtSecret;
 
     @Value("${app-jwt-expiration-milliseconds}")
@@ -23,6 +23,7 @@ public class JwtTokenProvider {
 
     //Generate JWT Token
     public String generateToken(Authentication authentication){
+
         String username = authentication.getName();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
@@ -35,10 +36,6 @@ public class JwtTokenProvider {
                 .compact();
 
         return token;
-    }
-
-    private Key key(){
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
     //get username from Jwt
@@ -74,6 +71,10 @@ public class JwtTokenProvider {
         catch (IllegalArgumentException ex){
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty");
         }
+    }
+
+    private Key key(){
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
 
