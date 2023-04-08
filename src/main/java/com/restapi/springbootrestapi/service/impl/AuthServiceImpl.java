@@ -7,6 +7,7 @@ import com.restapi.springbootrestapi.entity.User;
 import com.restapi.springbootrestapi.exception.BlogAPIException;
 import com.restapi.springbootrestapi.repository.RoleRepository;
 import com.restapi.springbootrestapi.repository.UserRepository;
+import com.restapi.springbootrestapi.security.JwtTokenProvider;
 import com.restapi.springbootrestapi.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,16 +28,18 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public AuthServiceImpl(AuthenticationManager authenticationManager,
                            UserRepository userRepository,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User Logged in Successfully";
+        return jwtTokenProvider.generateToken(authentication);
     }
 
     @Override
